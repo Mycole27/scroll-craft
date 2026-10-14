@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JAG Metal Studios · Architectural iron, drawn before it's forged</title>
+<meta name="description" content="Architect-designed staircases, railings, balconies, gates and fences for South Florida's finest homes. For homeowners, builders and architects.">
+<meta name="theme-color" content="#ECE9E3">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23161616'/><path d='M9 7v14a4 4 0 0 1-4 4M16 7v18M23 7v18M16 7h7' stroke='%23ECE9E3' stroke-width='2.4' fill='none'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="scrollcraft.css">
+<style>
+  :root {
+    --sc-canvas:     #ECE9E3;   /* drafting paper */
+    --sc-surface:    #F4F2EE;
+    --sc-ink:        #161616;   /* the iron */
+    --sc-ink-soft:   #55524C;
+    --sc-accent:     #7A5C30;   /* aged bronze: labels and markers only */
+    --sc-accent-ink: #F4F2EE;
+    --sc-font-display: "Archivo", system-ui, sans-serif;
+    --sc-font-text:    "Archivo", system-ui, sans-serif;
+    --serif: "Newsreader", Georgia, serif;
+    --pencil: #8C877E;
+    --iron: #161616;
+    --sc-shadow-color: 30 10% 30%;
+  }
+  body { background: var(--sc-canvas); color: var(--sc-ink); font-stretch: 100%; }
+  ::selection { background: var(--iron); color: var(--sc-canvas); }
+  .sc-grain { opacity: 0.035; }
+
+  /* dark bands: hard cut, so ink and accent are restated with color */
+  .band {
+    --sc-ink: #ECE9E3; --sc-ink-soft: #B3AEA5; --sc-accent: #C9A46A;
+    --sc-hairline: color-mix(in oklab, #ECE9E3 14%, transparent);
+    --sc-hairline-strong: color-mix(in oklab, #ECE9E3 24%, transparent);
+    background: var(--iron); color: var(--sc-ink);
+  }
+
+  /* ---------- type ---------- */
+  .eyebrow { font-family: var(--sc-font-text); font-size: var(--sc-t-sm); color: var(--sc-accent); margin: 0; font-weight: 500; }
+  .tag {
+    font-family: var(--sc-font-display); font-stretch: 112%; font-weight: 600;
+    font-size: var(--sc-t-xs); letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--sc-accent); margin: 0;
+  }
+  .caps {
+    font-family: var(--sc-font-display); font-weight: 700; font-stretch: 100%;
+    text-transform: uppercase; letter-spacing: -0.015em; line-height: 0.98; margin: 0;
+  }
+  .caps em, .serif em { font-family: var(--serif); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -0.01em; }
+  .serif { font-family: var(--serif); font-weight: 400; letter-spacing: -0.015em; line-height: 1.12; margin: 0; text-wrap: balance; }
+  .sc-body { color: var(--sc-ink-soft); }
+
+  /* ---------- nav ---------- */
+  .bar {
+    position: fixed; inset: 0 0 auto 0; z-index: var(--sc-z-chrome);
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--sc-5);
+    padding: var(--sc-4) var(--sc-gutter);
+    background: color-mix(in oklab, var(--sc-canvas) 86%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--sc-hairline);
+  }
+  .mark { display: inline-flex; align-items: baseline; gap: 0.6em; color: var(--sc-ink); text-decoration: none; white-space: nowrap; }
+  .mark img { height: 30px; width: auto; display: block; }
+  .mark b { font-family: var(--serif); font-weight: 400; font-size: 1.6rem; letter-spacing: -0.02em; line-height: 1; }
+  .mark small { font-family: var(--sc-font-display); font-stretch: 118%; font-size: 0.66rem; letter-spacing: 0.24em; font-weight: 500; }
+  .bar nav { justify-self: end; display: flex; gap: var(--sc-6); }
+  .bar nav a, .bar .start {
+    font-family: var(--sc-font-display); font-stretch: 108%; font-size: var(--sc-t-xs); font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--sc-ink);
+    text-decoration: none; padding-block: var(--sc-2);
+  }
+  .bar nav a { opacity: 0.72; transition: opacity var(--sc-d-base) var(--sc-ease-out); }
+  .bar nav a:hover, .bar nav a[aria-current="true"] { opacity: 1; }
+  .bar nav a[aria-current="true"] { box-shadow: inset 0 -1px 0 currentColor; }
+  .bar .start { text-decoration: underline; text-underline-offset: 5px; white-space: nowrap; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: var(--sc-3);
+    font-family: var(--sc-font-display); font-stretch: 108%; font-weight: 600;
+    font-size: var(--sc-t-xs); letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--sc-canvas); background: var(--sc-ink); text-decoration: none;
+    padding: 1.15em 1.6em; border: 1px solid var(--sc-ink); border-radius: 0; cursor: pointer;
+    transition: background var(--sc-d-base) var(--sc-ease-out), color var(--sc-d-base) var(--sc-ease-out);
+  }
+  .btn:hover { background: transparent; color: var(--sc-ink); }
+  .btn--ghost { background: transparent; color: var(--sc-ink); }
+  .btn--ghost:hover { background: var(--sc-ink); color: var(--sc-canvas); }
+  .band .btn { color: var(--iron); }
+  .band .btn:hover { color: var(--sc-ink); }
+  .link { font-family: var(--sc-font-display); font-stretch: 108%; font-weight: 600; font-size: var(--sc-t-xs); letter-spacing: 0.14em; text-transform: uppercase; color: inherit; text-decoration: none; }
+  .link:hover { text-decoration: underline; text-underline-offset: 5px; }
+  :focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 3px; }
+
+  /* ---------- 1 · hero: the drawing becomes the iron ---------- */
+  .hero [data-sc-stage] { overflow: hidden; }
+  .grid {
+    position: absolute; inset: -60px 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(color-mix(in oklab, var(--iron) 6%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklab, var(--iron) 6%, transparent) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 70% at 66% 50%, #000 30%, transparent 85%);
+  }
+  .elev, .dims {
+    position: absolute; z-index: 1; right: calc(var(--sc-gutter) * 0.4);
+    top: 53%; width: min(58vw, 1080px); height: auto; translate: 0 -46%;
+    overflow: visible; pointer-events: none;
+  }
+  .elev .ln path {
+    fill: none; stroke: var(--pencil); stroke-width: 1.1; vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1 1;
+    stroke-dashoffset: calc(1 - clamp(0, (var(--sc-p, 0) - var(--s, 0) * 0.9 - 0.04) * 3.2, 1));
+  }
+  .elev .steel path { fill: none; stroke: var(--iron); stroke-width: 5; stroke-linecap: square; }
+  .elev .steel path.w { stroke-width: 10; }
+  .elev .steel path:first-child { stroke-width: 8; }
+  .elev .steel {
+    opacity: clamp(0, (var(--sc-p, 0) - 0.56) * 3.2, 1);
+    filter: drop-shadow(0 14px 14px rgb(40 30 20 / 0.18));
+  }
+  .dims { z-index: 2; }
+  .dims path, .dims circle { fill: none; stroke: var(--sc-accent); stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .dims text { fill: var(--sc-accent); font-family: var(--sc-font-display); font-stretch: 112%; font-weight: 600; font-size: 12px; letter-spacing: 0.16em; }
+  .dims { opacity: clamp(0, (var(--sc-p, 0) - 0.3) * 4, 1); }
+  html:not(.sc-ready) .elev .ln path { stroke-dashoffset: 0; }
+  html:not(.sc-ready) .elev .steel, html:not(.sc-ready) .dims { opacity: 1; }
+
+  .hero-copy { position: absolute; z-index: 3; left: var(--sc-gutter); top: 50%; translate: 0 -42%; max-width: 32rem; }
+  .hero-copy h1 { font-size: clamp(2.4rem, 1.4rem + 3.6vw, 5rem); margin: var(--sc-4) 0 var(--sc-5); }
+  .hero-copy .sc-body { max-width: 26rem; }
+  .hero-copy .row { display: flex; gap: var(--sc-3); margin-top: var(--sc-6); flex-wrap: wrap; }
+  .stamp { position: absolute; z-index: 3; right: var(--sc-gutter); bottom: clamp(2rem, 7vh, 5rem); text-align: right; }
+  .stamp .serif { font-size: var(--sc-t-xl); margin-top: var(--sc-2); }
+
+  /* ---------- 2 · approach + paths ---------- */
+  .approach { padding-block: var(--sc-section); }
+  .approach .sc-wrap { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 8fr); gap: var(--sc-7); }
+  .approach .serif { font-size: var(--sc-t-2xl); max-width: 22em; }
+  .paths { padding-block: var(--sc-section); }
+  .paths h2 { font-size: var(--sc-t-3xl); margin: var(--sc-3) 0 var(--sc-7); }
+  .paths__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-5); }
+  .path { border: 1px solid color-mix(in oklab, var(--iron) 28%, transparent); padding: var(--sc-6); display: flex; flex-direction: column; gap: var(--sc-6); min-height: 15rem; }
+  .path.band { border-color: var(--iron); }
+  .path .serif { font-size: var(--sc-t-xl); }
+  .path .link { margin-top: auto; }
+  [data-sc-in] { opacity: 0; transform: translateY(18px); transition: opacity 900ms var(--sc-ease-out), transform 900ms var(--sc-ease-out); }
+  [data-sc-in].sc-in { opacity: 1; transform: none; }
+
+  /* ---------- 3 · disciplines (pan) ---------- */
+  .disc [data-sc-stage] { display: flex; align-items: center; overflow: hidden; }
+  .rail { display: flex; gap: clamp(1rem, 2.4vw, 2.5rem); padding-inline: var(--sc-gutter); align-items: stretch; will-change: transform; }
+  .rail__lead { flex: 0 0 min(80vw, 24rem); display: flex; flex-direction: column; justify-content: center; }
+  .rail__lead h2 { font-size: var(--sc-t-3xl); margin: var(--sc-3) 0 var(--sc-4); }
+  .card { flex: 0 0 min(78vw, 26rem); display: flex; flex-direction: column; gap: var(--sc-4); }
+  .card .plate {
+    aspect-ratio: 4 / 3; background: var(--sc-surface); border: 1px solid color-mix(in oklab, var(--iron) 18%, transparent);
+    display: grid; place-items: center; padding: var(--sc-5);
+  }
+  .card .plate svg { width: 100%; height: 100%; overflow: visible; }
+  .draw path { fill: none; stroke: var(--pencil); stroke-width: 1.3; vector-effect: non-scaling-stroke; stroke-linecap: square;
+    stroke-dasharray: 1 1; stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1100ms var(--sc-ease-in-out) calc(var(--s, 0) * 1500ms), stroke 900ms ease 1800ms, stroke-width 900ms ease 1800ms; }
+  .is-drawn .draw path { stroke-dashoffset: 0; stroke: var(--iron); stroke-width: 2.2; }
+  .card header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid color-mix(in oklab, var(--iron) 18%, transparent); padding-bottom: var(--sc-3); }
+  .card h3 { font-family: var(--sc-font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; font-size: var(--sc-t-base); margin: 0; }
+  .card p { margin: 0; color: var(--sc-ink-soft); }
+
+  /* ---------- 4 · process (flow, the line draws as you read) ---------- */
+  .process { padding-block: var(--sc-section); }
+  .process h2 { font-size: var(--sc-t-3xl); margin: 0 0 var(--sc-8); }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sc-6); position: relative; }
+  .steps::before {
+    content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--iron);
+    transform-origin: left; transform: scaleX(clamp(0, (var(--sc-p, 0) - 0.18) * 2.6, 1));
+  }
+  .steps li { padding-top: var(--sc-5); }
+  .steps .num { font-family: var(--serif); font-size: var(--sc-t-2xl); color: var(--sc-accent); line-height: 1; }
+  .steps h3 { font-family: var(--sc-font-display); font-weight: 700; font-size: var(--sc-t-sm); letter-spacing: 0.14em; text-transform: uppercase; margin: var(--sc-4) 0 var(--sc-2); }
+  .steps p { margin: 0; color: var(--sc-ink-soft); max-width: 24ch; }
+
+  /* ---------- 5 · selected work: sketch → finished piece (the peak) ---------- */
+  .work [data-sc-stage] { padding: clamp(5rem, 11vh, 6.5rem) var(--sc-gutter) clamp(1.5rem, 4vh, 2.5rem); display: grid; grid-template-rows: auto 1fr; gap: var(--sc-5); }
+  .work__head { display: flex; justify-content: space-between; align-items: end; gap: var(--sc-5); }
+  .work__head h2 { font-size: var(--sc-t-3xl); margin: var(--sc-2) 0 0; }
+  .frames { position: relative; min-height: 0; }
+  .frame { position: absolute; inset: 0; margin: 0; overflow: hidden; isolation: isolate; background: var(--sc-surface); border: 1px solid color-mix(in oklab, var(--iron) 18%, transparent); }
+  .sketch { position: absolute; inset: 0; display: grid; place-items: center; }
+  .sketch svg { width: min(62%, 720px); max-height: 74%; height: auto; overflow: visible; }
+  .sketch path { fill: none; stroke: var(--iron); stroke-width: 1.4; vector-effect: non-scaling-stroke; stroke-linecap: square; }
+  .photo { position: absolute; inset: 0; background: #2a2825; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; scale: calc(1.06 - var(--sc-p, 0) * 0.06); }
+  .photo:not(:has(img)) { display: none; }
+  .state { position: absolute; top: var(--sc-5); right: var(--sc-5); z-index: 3; }
+  .state span { display: inline-block; padding: 0.45em 0.8em; background: var(--sc-canvas); }
+  .frame figcaption {
+    position: absolute; left: 0; bottom: 0; right: 0; z-index: 2;
+    padding: var(--sc-4) var(--sc-5); background: var(--sc-canvas);
+    border-top: 1px solid color-mix(in oklab, var(--iron) 18%, transparent);
+    display: flex; justify-content: space-between; align-items: baseline; gap: var(--sc-4);
+  }
+  .frame figcaption h3 { font-family: var(--sc-font-display); font-weight: 700; font-size: var(--sc-t-base); margin: 0; }
+  .frame figcaption p { margin: 0; color: var(--sc-ink-soft); font-size: var(--sc-t-sm); }
+
+  /* ---------- 6 · builders + contact ---------- */
+  .builders { padding-block: var(--sc-section); }
+  .builders .sc-wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--sc-9); align-items: start; }
+  .builders .serif { font-size: var(--sc-t-2xl); margin: var(--sc-4) 0 var(--sc-5); }
+  .builders .sc-body { margin: 0 0 var(--sc-6); }
+  .ticks { list-style: none; margin: 0; padding: 0; }
+  .ticks li { padding: var(--sc-4) 0; border-bottom: 1px solid var(--sc-hairline-strong); }
+  .ticks li:first-child { border-top: 1px solid var(--sc-hairline-strong); }
+
+  .contact { padding-block: var(--sc-section) var(--sc-6); }
+  .contact .sc-wrap.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--sc-9); }
+  .contact h2 { font-size: var(--sc-t-3xl); margin: 0 0 var(--sc-5); }
+  .contact address { font-style: normal; margin-top: var(--sc-6); display: grid; gap: var(--sc-2); }
+  .contact address a { color: var(--sc-ink); }
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sc-4) var(--sc-4); }
+  .f { display: grid; gap: var(--sc-2); }
+  .f--full { grid-column: 1 / -1; }
+  .f label { font-family: var(--sc-font-display); font-stretch: 108%; font-weight: 600; font-size: var(--sc-t-xs); letter-spacing: 0.14em; text-transform: uppercase; }
+  .f input, .f select, .f textarea {
+    font: inherit; color: var(--sc-ink); background: var(--sc-surface);
+    border: 1px solid color-mix(in oklab, var(--iron) 32%, transparent); border-radius: 0;
+    padding: 0.8em 0.9em; width: 100%;
+  }
+  .f textarea { resize: vertical; min-height: 8rem; }
+  .f input:focus, .f select:focus, .f textarea:focus { outline: none; border-color: var(--iron); box-shadow: 0 0 0 1px var(--iron); }
+  .form-foot { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--sc-5); flex-wrap: wrap; }
+  .status { font-size: var(--sc-t-sm); color: var(--sc-ink-soft); margin: 0; }
+  .foot { border-top: 1px solid color-mix(in oklab, var(--iron) 18%, transparent); margin-top: var(--sc-10); padding-top: var(--sc-5); display: flex; justify-content: space-between; gap: var(--sc-4); flex-wrap: wrap; align-items: baseline; }
+  .foot p { margin: 0; font-size: var(--sc-t-sm); color: var(--sc-ink-soft); }
+  .foot b { font-family: var(--serif); font-weight: 400; font-size: 1.15rem; color: var(--sc-ink); }
+
+  /* ---------- phones ---------- */
+  @media (max-width: 820px) {
+    .bar nav { display: none; }
+    .bar { grid-template-columns: 1fr auto; }
+    .elev, .dims { width: 124vw; right: -12vw; top: 27%; translate: 0 -50%; }
+    .dims text { font-size: 19px; }
+    .hero-copy { top: auto; bottom: clamp(1.5rem, 5vh, 3rem); translate: none; right: var(--sc-gutter); }
+    .hero-copy h1 { font-size: var(--sc-t-2xl); }
+    .stamp { display: none; }
+    .approach .sc-wrap, .builders .sc-wrap, .contact .sc-wrap.split, .paths__grid { grid-template-columns: 1fr; gap: var(--sc-6); }
+    .approach .serif { font-size: var(--sc-t-xl); }
+    .steps { grid-template-columns: 1fr 1fr; row-gap: var(--sc-7); }
+    form { grid-template-columns: 1fr; }
+    .work__head .sc-body { display: none; }
+    .sketch svg { width: 84%; }
+    .frame figcaption { flex-direction: column; gap: var(--sc-1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .elev .ln path { stroke-dashoffset: 0 !important; }
+    .elev .steel, .dims { opacity: 1; }
+    .draw path { transition: none; stroke-dashoffset: 0; stroke: var(--iron); stroke-width: 2.2; }
+    .steps::before { transform: none; }
+    .photo img { scale: 1; }
+    [data-sc-in] { transition: opacity 400ms ease; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<span data-sc-progress></span>
+<div class="sc-grain" aria-hidden="true"></div>
+
+<header class="bar">
+  <!-- Logo: save the exported logo as assets/brand/logo.svg and it replaces the wordmark automatically. -->
+  <a class="mark" href="#top" aria-label="JAG Metal Studios, home">
+    <img src="assets/brand/logo.svg" alt="JAG Metal Studios" hidden onload="this.hidden=false;this.nextElementSibling.hidden=true;this.nextElementSibling.nextElementSibling.hidden=true" onerror="this.remove()">
+    <b>JAG</b><small>METAL STUDIOS</small>
+  </a>
+  <nav aria-label="Sections">
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#builders">For builders</a>
+  </nav>
+  <a class="start" href="#contact">Start a project</a>
+</header>
+
+<main>
+
+  <!-- 1 · the drawing becomes the iron (signature move) -->
+  <section id="top" class="hero" data-sc-act="pin" data-sc-span="2.3" data-sc-drift="#ECE9E3">
+    <div data-sc-stage>
+      <div class="grid" data-sc-parallax="0.5" aria-hidden="true"></div>
+      <svg class="elev" viewBox="0 0 1200 620" aria-hidden="true" data-sc-parallax="-0.35">
+        <g class="ln"><path d="M40.0 540.0L1160.0 540.0" pathLength="1" style="--s:0.000"/><path d="M1120.0 40.0L1120.0 580.0" pathLength="1" style="--s:0.020"/><path d="M300 540V500H364V460H428V420H492V380H556V340H620V300H684V260H748V220H812" pathLength="1" style="--s:0.050"/><path d="M812 220H1110M812 240H1110" pathLength="1" style="--s:0.120"/><path d="M370.0 540.0L812.0 240.0" pathLength="1" style="--s:0.140"/><path d="M288.0 540.0L288.0 344.0" pathLength="1" style="--s:0.200"/><path d="M288 357.5L780.0 50.0L842.0 50.0H1110" pathLength="1" style="--s:0.240"/><path d="M319.2 500.0L319.2 338.0" pathLength="1" style="--s:0.300"/><path d="M348.0 500.0L348.0 320.0" pathLength="1" style="--s:0.306"/><path d="M383.2 460.0L383.2 298.0" pathLength="1" style="--s:0.312"/><path d="M412.0 460.0L412.0 280.0" pathLength="1" style="--s:0.318"/><path d="M447.2 420.0L447.2 258.0" pathLength="1" style="--s:0.324"/><path d="M476.0 420.0L476.0 240.0" pathLength="1" style="--s:0.330"/><path d="M511.2 380.0L511.2 218.0" pathLength="1" style="--s:0.336"/><path d="M540.0 380.0L540.0 200.0" pathLength="1" style="--s:0.342"/><path d="M575.2 340.0L575.2 178.0" pathLength="1" style="--s:0.348"/><path d="M604.0 340.0L604.0 160.0" pathLength="1" style="--s:0.354"/><path d="M639.2 300.0L639.2 138.0" pathLength="1" style="--s:0.360"/><path d="M668.0 300.0L668.0 120.0" pathLength="1" style="--s:0.366"/><path d="M703.2 260.0L703.2 98.0" pathLength="1" style="--s:0.372"/><path d="M732.0 260.0L732.0 80.0" pathLength="1" style="--s:0.378"/><path d="M767.2 220.0L767.2 58.0" pathLength="1" style="--s:0.384"/><path d="M842.0 220.0L842.0 50.0" pathLength="1" style="--s:0.390"/><path d="M876.0 220.0L876.0 50.0" pathLength="1" style="--s:0.396"/><path d="M910.0 220.0L910.0 50.0" pathLength="1" style="--s:0.402"/><path d="M944.0 220.0L944.0 50.0" pathLength="1" style="--s:0.408"/><path d="M978.0 220.0L978.0 50.0" pathLength="1" style="--s:0.414"/><path d="M1012.0 220.0L1012.0 50.0" pathLength="1" style="--s:0.420"/><path d="M1046.0 220.0L1046.0 50.0" pathLength="1" style="--s:0.426"/><path d="M1080.0 220.0L1080.0 50.0" pathLength="1" style="--s:0.432"/></g>
+        <g class="steel"><path d="M288 357.5L780.0 50.0L842.0 50.0H1110"/><path d="M288.0 540.0L288.0 344.0" class="w"/><path d="M319.2 500.0L319.2 338.0"/><path d="M348.0 500.0L348.0 320.0"/><path d="M383.2 460.0L383.2 298.0"/><path d="M412.0 460.0L412.0 280.0"/><path d="M447.2 420.0L447.2 258.0"/><path d="M476.0 420.0L476.0 240.0"/><path d="M511.2 380.0L511.2 218.0"/><path d="M540.0 380.0L540.0 200.0"/><path d="M575.2 340.0L575.2 178.0"/><path d="M604.0 340.0L604.0 160.0"/><path d="M639.2 300.0L639.2 138.0"/><path d="M668.0 300.0L668.0 120.0"/><path d="M703.2 260.0L703.2 98.0"/><path d="M732.0 260.0L732.0 80.0"/><path d="M767.2 220.0L767.2 58.0"/><path d="M842.0 220.0L842.0 50.0"/><path d="M876.0 220.0L876.0 50.0"/><path d="M910.0 220.0L910.0 50.0"/><path d="M944.0 220.0L944.0 50.0"/><path d="M978.0 220.0L978.0 50.0"/><path d="M1012.0 220.0L1012.0 50.0"/><path d="M1046.0 220.0L1046.0 50.0"/><path d="M1080.0 220.0L1080.0 50.0"/></g>
+      </svg>
+      <svg class="dims" viewBox="0 0 1200 620" aria-hidden="true" data-sc-parallax="-1.4">
+        <path d="M240 500V350.0M232 500h16M232 350.0h16"/>
+<text x="224" y="425" text-anchor="end">42&quot; RAIL</text>
+<path d="M300 574H812M300 566v16M812 566v16"/>
+<text x="556" y="600" text-anchor="middle">8 RISERS · 11&quot; TREADS</text>
+<path d="M852 70l60 -40h120"/><text x="920" y="22">FLAT BAR BALUSTER</text>
+<circle cx="852" cy="70" r="4"/>
+        <text x="40" y="604">SHEET A-01 · STAIR ELEVATION · SCALE 1:20</text>
+      </svg>
+
+      <div class="hero-copy">
+        <p class="eyebrow">designed by hand, built for generations</p>
+        <h1 class="caps">Architectural iron, <em>drawn</em> before it's forged.</h1>
+        <p class="sc-body">Staircases, railings, balconies and gates, designed by an architect for South Florida's finest homes.</p>
+        <div class="row">
+          <a class="btn" href="#contact">Start a project</a>
+          <a class="btn btn--ghost" href="#work">View the work</a>
+        </div>
+      </div>
+      <div class="stamp" data-sc-cue="0.66">
+        <p class="tag">Sketch → finished piece</p>
+        <p class="serif">Every piece starts as a drawing.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · approach + two paths -->
+  <section id="studio" data-sc-act="flow" data-sc-drift="#ECE9E3">
+    <div class="approach band">
+      <div class="sc-wrap" data-sc-in>
+        <p class="tag">Our approach</p>
+        <p class="serif">Most ironwork is fabricated. Ours is <em>designed</em>, by an architect who thinks about how a staircase meets the light, how a railing frames a view, and how a gate greets a guest.</p>
+      </div>
+    </div>
+    <div class="paths">
+      <div class="sc-wrap">
+        <p class="eyebrow">two ways to work with us</p>
+        <h2 class="caps">Choose your project path</h2>
+        <div class="paths__grid" data-sc-in data-sc-stagger="90">
+          <article class="path" data-sc-in>
+            <p class="tag">For homeowners</p>
+            <p class="serif">A one-of-a-kind piece, designed around your home.</p>
+            <a class="link" href="#contact" data-role="Homeowner">Start a project →</a>
+          </article>
+          <article class="path band" data-sc-in>
+            <p class="tag">For builders &amp; architects</p>
+            <p class="serif">Design, fabrication and install. One partner, one quote.</p>
+            <a class="link" href="#contact" data-role="Builder">Send us plans →</a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · what we design (pan) -->
+  <section id="disciplines" class="disc" data-sc-act="pan" data-sc-span="3.8" data-sc-drift="#E6E2DA">
+    <div data-sc-stage>
+      <div class="rail" data-sc-pan="0.04">
+        <div class="rail__lead">
+          <p class="eyebrow">every piece custom-drawn, no catalog</p>
+          <h2 class="caps">What we <em>design</em></h2>
+          <p class="sc-body">Each drawing inks into iron as it arrives, the same way every project does.</p>
+        </div>
+        <article class="card">
+          <div class="plate"><svg class="draw" viewBox="0 0 480 320" aria-hidden="true"><path d="M60 290H440" pathLength="1" style="--s:0.000"/><path d="M120 290L380 50" pathLength="1" style="--s:0.100"/><path d="M90 276H160" pathLength="1" style="--s:0.250"/><path d="M127 242H197" pathLength="1" style="--s:0.300"/><path d="M164 207H234" pathLength="1" style="--s:0.350"/><path d="M201 173H271" pathLength="1" style="--s:0.400"/><path d="M238 139H308" pathLength="1" style="--s:0.450"/><path d="M275 104H345" pathLength="1" style="--s:0.500"/><path d="M312 70H382" pathLength="1" style="--s:0.550"/></svg></div>
+          <header><h3>Staircases</h3><span class="tag">01</span></header>
+          <p>Floating, spiral and mono-stringer stairs, drawn as the centerpiece of the house.</p>
+        </article>
+        <article class="card">
+          <div class="plate"><svg class="draw" viewBox="0 0 480 320" aria-hidden="true"><path d="M20 250H460M20 262H460" pathLength="1" style="--s:0.000"/><path d="M30 110H450" pathLength="1" style="--s:0.250"/><path d="M30 122H450" pathLength="1" style="--s:0.300"/><path d="M30 110V250M450 110V250" pathLength="1" style="--s:0.150"/><path d="M60 122V250" pathLength="1" style="--s:0.400"/><path d="M88 122V250" pathLength="1" style="--s:0.420"/><path d="M116 122V250" pathLength="1" style="--s:0.440"/><path d="M144 122V250" pathLength="1" style="--s:0.460"/><path d="M172 122V250" pathLength="1" style="--s:0.480"/><path d="M200 122V250" pathLength="1" style="--s:0.500"/><path d="M228 122V250" pathLength="1" style="--s:0.520"/><path d="M256 122V250" pathLength="1" style="--s:0.540"/><path d="M284 122V250" pathLength="1" style="--s:0.560"/><path d="M312 122V250" pathLength="1" style="--s:0.580"/><path d="M340 122V250" pathLength="1" style="--s:0.600"/><path d="M368 122V250" pathLength="1" style="--s:0.620"/><path d="M396 122V250" pathLength="1" style="--s:0.640"/><path d="M424 122V250" pathLength="1" style="--s:0.660"/></svg></div>
+          <header><h3>Railings</h3><span class="tag">02</span></header>
+          <p>Interior and exterior railings with lines that frame the view instead of blocking it.</p>
+        </article>
+        <article class="card">
+          <div class="plate"><svg class="draw" viewBox="0 0 480 320" aria-hidden="true"><path d="M40 300H440" pathLength="1" style="--s:0.000"/><path d="M90 300V60H390V300" pathLength="1" style="--s:0.050"/><path d="M150 300V110H330V300M240 110V300" pathLength="1" style="--s:0.150"/><path d="M40 200H440M40 214H440" pathLength="1" style="--s:0.300"/><path d="M40 110H440" pathLength="1" style="--s:0.450"/><path d="M52 112V200" pathLength="1" style="--s:0.550"/><path d="M74 112V200" pathLength="1" style="--s:0.562"/><path d="M96 112V200" pathLength="1" style="--s:0.574"/><path d="M118 112V200" pathLength="1" style="--s:0.586"/><path d="M140 112V200" pathLength="1" style="--s:0.598"/><path d="M162 112V200" pathLength="1" style="--s:0.610"/><path d="M184 112V200" pathLength="1" style="--s:0.622"/><path d="M206 112V200" pathLength="1" style="--s:0.634"/><path d="M228 112V200" pathLength="1" style="--s:0.646"/><path d="M250 112V200" pathLength="1" style="--s:0.658"/><path d="M272 112V200" pathLength="1" style="--s:0.670"/><path d="M294 112V200" pathLength="1" style="--s:0.682"/><path d="M316 112V200" pathLength="1" style="--s:0.694"/><path d="M338 112V200" pathLength="1" style="--s:0.706"/><path d="M360 112V200" pathLength="1" style="--s:0.718"/><path d="M382 112V200" pathLength="1" style="--s:0.730"/><path d="M404 112V200" pathLength="1" style="--s:0.742"/><path d="M426 112V200" pathLength="1" style="--s:0.754"/></svg></div>
+          <header><h3>Balconies</h3><span class="tag">03</span></header>
+          <p>Balcony and terrace guards detailed for the architecture and the coastal air.</p>
+        </article>
+        <article class="card">
+          <div class="plate"><svg class="draw" viewBox="0 0 480 320" aria-hidden="true"><path d="M30 290H450" pathLength="1" style="--s:0.000"/><path d="M60 290V40M420 290V40" pathLength="1" style="--s:0.080"/><path d="M74 60H236V280H74ZM244 60H406V280H244Z" pathLength="1" style="--s:0.200"/><path d="M74 84H236M244 84H406" pathLength="1" style="--s:0.400"/><path d="M74 106H236M244 106H406" pathLength="1" style="--s:0.430"/><path d="M74 128H236M244 128H406" pathLength="1" style="--s:0.460"/><path d="M74 150H236M244 150H406" pathLength="1" style="--s:0.490"/><path d="M74 172H236M244 172H406" pathLength="1" style="--s:0.520"/><path d="M74 194H236M244 194H406" pathLength="1" style="--s:0.550"/><path d="M74 216H236M244 216H406" pathLength="1" style="--s:0.580"/><path d="M74 238H236M244 238H406" pathLength="1" style="--s:0.610"/><path d="M74 260H236M244 260H406" pathLength="1" style="--s:0.640"/><path d="M228 160V180M252 160V180" pathLength="1" style="--s:0.800"/></svg></div>
+          <header><h3>Gates &amp; doors</h3><span class="tag">04</span></header>
+          <p>Entry and driveway gates designed to greet a guest and to swing true for years.</p>
+        </article>
+        <article class="card">
+          <div class="plate"><svg class="draw" viewBox="0 0 480 320" aria-hidden="true"><path d="M10 290H470" pathLength="1" style="--s:0.000"/><path d="M30 290V70" pathLength="1" style="--s:0.100"/><path d="M180 290V70" pathLength="1" style="--s:0.140"/><path d="M330 290V70" pathLength="1" style="--s:0.180"/><path d="M450 290V70" pathLength="1" style="--s:0.220"/><path d="M30 90H450M30 260H450" pathLength="1" style="--s:0.300"/><path d="M44 90V260" pathLength="1" style="--s:0.450"/><path d="M60 90V260" pathLength="1" style="--s:0.458"/><path d="M76 90V260" pathLength="1" style="--s:0.466"/><path d="M92 90V260" pathLength="1" style="--s:0.474"/><path d="M108 90V260" pathLength="1" style="--s:0.482"/><path d="M124 90V260" pathLength="1" style="--s:0.490"/><path d="M140 90V260" pathLength="1" style="--s:0.498"/><path d="M156 90V260" pathLength="1" style="--s:0.506"/><path d="M172 90V260" pathLength="1" style="--s:0.514"/><path d="M188 90V260" pathLength="1" style="--s:0.522"/><path d="M204 90V260" pathLength="1" style="--s:0.530"/><path d="M220 90V260" pathLength="1" style="--s:0.538"/><path d="M236 90V260" pathLength="1" style="--s:0.546"/><path d="M252 90V260" pathLength="1" style="--s:0.554"/><path d="M268 90V260" pathLength="1" style="--s:0.562"/><path d="M284 90V260" pathLength="1" style="--s:0.570"/><path d="M300 90V260" pathLength="1" style="--s:0.578"/><path d="M316 90V260" pathLength="1" style="--s:0.586"/><path d="M348 90V260" pathLength="1" style="--s:0.602"/><path d="M364 90V260" pathLength="1" style="--s:0.610"/><path d="M380 90V260" pathLength="1" style="--s:0.618"/><path d="M396 90V260" pathLength="1" style="--s:0.626"/><path d="M412 90V260" pathLength="1" style="--s:0.634"/><path d="M428 90V260" pathLength="1" style="--s:0.642"/><path d="M444 90V260" pathLength="1" style="--s:0.650"/></svg></div>
+          <header><h3>Fences</h3><span class="tag">05</span></header>
+          <p>Perimeter and pool fencing that holds the line of the property with the same care as the front door.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · process (flow; the line draws across as you read) -->
+  <section id="process" class="process" data-sc-act="flow" data-sc-drift="#ECE9E3">
+    <div class="sc-wrap">
+      <h2 class="serif" data-sc-in>From measurement <em>to masterpiece</em></h2>
+      <ol class="steps" data-sc-in data-sc-stagger="120">
+        <li data-sc-in><span class="num">01</span><h3>Measure</h3><p>We field-measure every opening, stair and landing on site.</p></li>
+        <li data-sc-in><span class="num">02</span><h3>Design</h3><p>Architect-drawn concepts and shop drawings, refined with you and your builder.</p></li>
+        <li data-sc-in><span class="num">03</span><h3>Fabricate</h3><p>Built by trusted fabrication partners to our drawings and our standards.</p></li>
+        <li data-sc-in><span class="num">04</span><h3>Finish &amp; install</h3><p>Powder-coated for the coastal climate and installed with care.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5 · selected work: each project opens as its sketch, then the finished piece wipes over it (peak, largest span).
+       Photos: save as assets/work/01.jpg … 04.jpg and they appear automatically. -->
+  <section id="work" class="work" data-sc-act="pin" data-sc-span="5" data-sc-drift="#E3DED5">
+    <div data-sc-stage>
+      <div class="work__head">
+        <div>
+          <p class="eyebrow">sketch → finished piece</p>
+          <h2 class="caps">Selected work</h2>
+        </div>
+        <p class="sc-body">Keep scrolling: each project opens as its original drawing, then the finished piece.</p>
+      </div>
+      <div class="frames">
+        <figure class="frame">
+          <div class="sketch"><svg viewBox="0 0 1200 620" aria-hidden="true"><path d="M40.0 540.0L1160.0 540.0" pathLength="1" style="--s:0.000"/><path d="M1120.0 40.0L1120.0 580.0" pathLength="1" style="--s:0.020"/><path d="M300 540V500H364V460H428V420H492V380H556V340H620V300H684V260H748V220H812" pathLength="1" style="--s:0.050"/><path d="M812 220H1110M812 240H1110" pathLength="1" style="--s:0.120"/><path d="M370.0 540.0L812.0 240.0" pathLength="1" style="--s:0.140"/><path d="M288.0 540.0L288.0 344.0" pathLength="1" style="--s:0.200"/><path d="M288 357.5L780.0 50.0L842.0 50.0H1110" pathLength="1" style="--s:0.240"/><path d="M319.2 500.0L319.2 338.0" pathLength="1" style="--s:0.300"/><path d="M348.0 500.0L348.0 320.0" pathLength="1" style="--s:0.306"/><path d="M383.2 460.0L383.2 298.0" pathLength="1" style="--s:0.312"/><path d="M412.0 460.0L412.0 280.0" pathLength="1" style="--s:0.318"/><path d="M447.2 420.0L447.2 258.0" pathLength="1" style="--s:0.324"/><path d="M476.0 420.0L476.0 240.0" pathLength="1" style="--s:0.330"/><path d="M511.2 380.0L511.2 218.0" pathLength="1" style="--s:0.336"/><path d="M540.0 380.0L540.0 200.0" pathLength="1" style="--s:0.342"/><path d="M575.2 340.0L575.2 178.0" pathLength="1" style="--s:0.348"/><path d="M604.0 340.0L604.0 160.0" pathLength="1" style="--s:0.354"/><path d="M639.2 300.0L639.2 138.0" pathLength="1" style="--s:0.360"/><path d="M668.0 300.0L668.0 120.0" pathLength="1" style="--s:0.366"/><path d="M703.2 260.0L703.2 98.0" pathLength="1" style="--s:0.372"/><path d="M732.0 260.0L732.0 80.0" pathLength="1" style="--s:0.378"/><path d="M767.2 220.0L767.2 58.0" pathLength="1" style="--s:0.384"/><path d="M842.0 220.0L842.0 50.0" pathLength="1" style="--s:0.390"/><path d="M876.0 220.0L876.0 50.0" pathLength="1" style="--s:0.396"/><path d="M910.0 220.0L910.0 50.0" pathLength="1" style="--s:0.402"/><path d="M944.0 220.0L944.0 50.0" pathLength="1" style="--s:0.408"/><path d="M978.0 220.0L978.0 50.0" pathLength="1" style="--s:0.414"/><path d="M1012.0 220.0L1012.0 50.0" pathLength="1" style="--s:0.420"/><path d="M1046.0 220.0L1046.0 50.0" pathLength="1" style="--s:0.426"/><path d="M1080.0 220.0L1080.0 50.0" pathLength="1" style="--s:0.432"/></svg></div>
+          <div class="photo" data-sc-reveal="up" data-sc-reveal-at="0.04 0.16"><img src="assets/work/01.jpg" alt="Finished steel staircase with flat-bar railing" onerror="this.remove()"></div>
+          <figcaption><h3>Project name · Staircase</h3><p>Private residence, South Florida</p></figcaption>
+        </figure>
+        <figure class="frame" data-sc-reveal="left" data-sc-reveal-at="0.22 0.34">
+          <div class="sketch"><svg viewBox="0 0 480 320" aria-hidden="true"><path d="M30 290H450" pathLength="1" style="--s:0.000"/><path d="M60 290V40M420 290V40" pathLength="1" style="--s:0.080"/><path d="M74 60H236V280H74ZM244 60H406V280H244Z" pathLength="1" style="--s:0.200"/><path d="M74 84H236M244 84H406" pathLength="1" style="--s:0.400"/><path d="M74 106H236M244 106H406" pathLength="1" style="--s:0.430"/><path d="M74 128H236M244 128H406" pathLength="1" style="--s:0.460"/><path d="M74 150H236M244 150H406" pathLength="1" style="--s:0.490"/><path d="M74 172H236M244 172H406" pathLength="1" style="--s:0.520"/><path d="M74 194H236M244 194H406" pathLength="1" style="--s:0.550"/><path d="M74 216H236M244 216H406" pathLength="1" style="--s:0.580"/><path d="M74 238H236M244 238H406" pathLength="1" style="--s:0.610"/><path d="M74 260H236M244 260H406" pathLength="1" style="--s:0.640"/><path d="M228 160V180M252 160V180" pathLength="1" style="--s:0.800"/></svg></div>
+          <div class="photo" data-sc-reveal="up" data-sc-reveal-at="0.36 0.46"><img src="assets/work/02.jpg" alt="Finished double driveway gate" onerror="this.remove()"></div>
+          <figcaption><h3>Project name · Gates &amp; doors</h3><p>Private residence, South Florida</p></figcaption>
+        </figure>
+        <figure class="frame" data-sc-reveal="left" data-sc-reveal-at="0.5 0.62">
+          <div class="sketch"><svg viewBox="0 0 480 320" aria-hidden="true"><path d="M40 300H440" pathLength="1" style="--s:0.000"/><path d="M90 300V60H390V300" pathLength="1" style="--s:0.050"/><path d="M150 300V110H330V300M240 110V300" pathLength="1" style="--s:0.150"/><path d="M40 200H440M40 214H440" pathLength="1" style="--s:0.300"/><path d="M40 110H440" pathLength="1" style="--s:0.450"/><path d="M52 112V200" pathLength="1" style="--s:0.550"/><path d="M74 112V200" pathLength="1" style="--s:0.562"/><path d="M96 112V200" pathLength="1" style="--s:0.574"/><path d="M118 112V200" pathLength="1" style="--s:0.586"/><path d="M140 112V200" pathLength="1" style="--s:0.598"/><path d="M162 112V200" pathLength="1" style="--s:0.610"/><path d="M184 112V200" pathLength="1" style="--s:0.622"/><path d="M206 112V200" pathLength="1" style="--s:0.634"/><path d="M228 112V200" pathLength="1" style="--s:0.646"/><path d="M250 112V200" pathLength="1" style="--s:0.658"/><path d="M272 112V200" pathLength="1" style="--s:0.670"/><path d="M294 112V200" pathLength="1" style="--s:0.682"/><path d="M316 112V200" pathLength="1" style="--s:0.694"/><path d="M338 112V200" pathLength="1" style="--s:0.706"/><path d="M360 112V200" pathLength="1" style="--s:0.718"/><path d="M382 112V200" pathLength="1" style="--s:0.730"/><path d="M404 112V200" pathLength="1" style="--s:0.742"/><path d="M426 112V200" pathLength="1" style="--s:0.754"/></svg></div>
+          <div class="photo" data-sc-reveal="up" data-sc-reveal-at="0.64 0.74"><img src="assets/work/03.jpg" alt="Finished balcony railing" onerror="this.remove()"></div>
+          <figcaption><h3>Project name · Balconies</h3><p>Residential development, South Florida</p></figcaption>
+        </figure>
+        <figure class="frame" data-sc-reveal="left" data-sc-reveal-at="0.78 0.88">
+          <div class="sketch"><svg viewBox="0 0 480 320" aria-hidden="true"><path d="M20 250H460M20 262H460" pathLength="1" style="--s:0.000"/><path d="M30 110H450" pathLength="1" style="--s:0.250"/><path d="M30 122H450" pathLength="1" style="--s:0.300"/><path d="M30 110V250M450 110V250" pathLength="1" style="--s:0.150"/><path d="M60 122V250" pathLength="1" style="--s:0.400"/><path d="M88 122V250" pathLength="1" style="--s:0.420"/><path d="M116 122V250" pathLength="1" style="--s:0.440"/><path d="M144 122V250" pathLength="1" style="--s:0.460"/><path d="M172 122V250" pathLength="1" style="--s:0.480"/><path d="M200 122V250" pathLength="1" style="--s:0.500"/><path d="M228 122V250" pathLength="1" style="--s:0.520"/><path d="M256 122V250" pathLength="1" style="--s:0.540"/><path d="M284 122V250" pathLength="1" style="--s:0.560"/><path d="M312 122V250" pathLength="1" style="--s:0.580"/><path d="M340 122V250" pathLength="1" style="--s:0.600"/><path d="M368 122V250" pathLength="1" style="--s:0.620"/><path d="M396 122V250" pathLength="1" style="--s:0.640"/><path d="M424 122V250" pathLength="1" style="--s:0.660"/></svg></div>
+          <div class="photo" data-sc-reveal="up" data-sc-reveal-at="0.9 0.98"><img src="assets/work/04.jpg" alt="Finished interior railing" onerror="this.remove()"></div>
+          <figcaption><h3>Project name · Railings</h3><p>Private residence, South Florida</p></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · builders + contact -->
+  <section id="builders" data-sc-act="flow" data-sc-drift="#ECE9E3">
+    <div class="builders band">
+      <div class="sc-wrap">
+        <div data-sc-in>
+          <p class="tag">For builders &amp; architects</p>
+          <p class="serif">One partner for design, fabrication and install.</p>
+          <p class="sc-body">We speak your language: drawings, schedules and site realities. Send us plans and we'll return a design concept and quote you can put in front of your client.</p>
+          <a class="btn" href="#contact" data-role="Builder">Send us plans</a>
+        </div>
+        <ul class="ticks" data-sc-in>
+          <li>Architect-led design, in-house</li>
+          <li>Fast, itemized quotes from your plans</li>
+          <li>One point of contact from measure to install</li>
+          <li>Finishes specified for coastal homes</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="contact" class="contact">
+      <div class="sc-wrap split">
+        <div data-sc-in>
+          <h2 class="serif">Let's draw <em>something.</em></h2>
+          <p class="sc-body">Tell us about your home or project. We'll follow up to schedule a measurement.</p>
+          <!-- Replace with the real phone, email and city. -->
+          <address>
+            <a href="mailto:hello@jagmetalstudios.com">hello@jagmetalstudios.com</a>
+            <span>South Florida</span>
+          </address>
+        </div>
+        <form id="enquiry" data-sc-in novalidate>
+          <div class="f"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="f"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="f"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+          <div class="f"><label for="f-role">I am a</label>
+            <select id="f-role" name="role"><option>Homeowner</option><option>Builder</option><option>Architect / designer</option><option>Developer</option></select></div>
+          <div class="f f--full"><label for="f-msg">Tell us about the project</label><textarea id="f-msg" name="message" placeholder="Staircase, railings, balcony, gate or fence. Location, timeline, and plans if you have them."></textarea></div>
+          <div class="form-foot">
+            <button class="btn" type="submit">Send inquiry</button>
+            <p class="status" id="status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+      <div class="sc-wrap">
+        <footer class="foot">
+          <p><b>JAG</b> Metal Studios · Every piece starts as a sketch.</p>
+          <p>© <span id="yr">2026</span> JAG Metal Studios</p>
+        </footer>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="scrollcraft.js"></script>
+<script>
+  ScrollCraft.mount(document.body);
+
+  // Discipline drawings ink into iron as each card arrives.
+  (function () {
+    var cards = document.querySelectorAll('.card');
+    if (!('IntersectionObserver' in window)) { cards.forEach(function (c) { c.classList.add('is-drawn'); }); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-drawn'); io.unobserve(e.target); } });
+    }, { threshold: 0.55 });
+    cards.forEach(function (c) { io.observe(c); });
+  })();
+
+  // Nav marks the section you're in.
+  (function () {
+    var links = {};
+    document.querySelectorAll('.bar nav a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        Object.keys(links).forEach(function (k) { links[k].setAttribute('aria-current', k === e.target.id ? 'true' : 'false'); });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    ['top', 'studio', 'disciplines', 'process', 'work', 'builders'].forEach(function (id) { io.observe(document.getElementById(id)); });
+  })();
+
+  // "Send us plans" / "Start a project" preselect who's asking.
+  document.querySelectorAll('[data-role]').forEach(function (a) {
+    a.addEventListener('click', function () { document.getElementById('f-role').value = a.getAttribute('data-role'); });
+  });
+
+  // Enquiry form: no backend yet, so it opens a pre-filled email.
+  (function () {
+    var TO = 'hello@jagmetalstudios.com'; // replace with the real inbox
+    var f = document.getElementById('enquiry'), status = document.getElementById('status');
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    f.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var d = new FormData(f);
+      var name = (d.get('name') || '').trim(), email = (d.get('email') || '').trim();
+      if (!name || !/^\S+@\S+\.\S+$/.test(email)) {
+        status.textContent = 'Please add your name and a valid email.';
+        (name ? f.elements.email : f.elements.name).focus();
+        return;
+      }
+      var body = ['Name: ' + name, 'Email: ' + email, 'Phone: ' + (d.get('phone') || '-'), 'I am a: ' + d.get('role'), '', (d.get('message') || '')].join('\n');
+      location.href = 'mailto:' + TO + '?subject=' + encodeURIComponent('Project inquiry from ' + name) + '&body=' + encodeURIComponent(body);
+      status.textContent = 'Opening your email app with the details filled in…';
+    });
+  })();
+</script>
+</body>
+</html>
