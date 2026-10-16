@@ -15,11 +15,20 @@ node ../../plugins/nateherk-design/skills/scroll-craft/scripts/serve.mjs --root 
 | What | Where | Effect |
 |---|---|---|
 | Logo | `assets/brand/logo.svg` | Replaces the typeset "JAG Metal Studios" wordmark in the nav |
-| Project photos | `assets/work/01.jpg` … `04.jpg` | Each finished photo wipes in over its sketch in **Selected work** |
+| Project photos | `assets/work/02.jpg` … `04.jpg` | Each finished photo wipes in over its sketch in **Selected work** |
 
-Photo order: 01 staircase, 02 gate, 03 balcony, 04 railing. Use landscape
+Photo order: 02 gate, 03 balcony, 04 railing. (The staircase is told by the scroll film.) Use landscape
 photos, about 2400px wide. To change the order or the captions, edit the four
 `<figure class="frame">` blocks in `index.html`.
+
+## The scroll film
+
+`assets/film/drawing-to-stair.mp4` (desktop) and `-m.mp4` (phone) play forward
+as the visitor scrolls, from drawing to finished staircase. They are encoded with
+dense keyframes for smooth scrubbing. To replace the film, re-encode the new
+clip with the skill's `scripts/encode.sh` and keep the same file names. The two
+`.webp` files are the first and last frames: the first shows while the video
+loads, and the last is used for visitors with reduced motion turned on.
 
 ## Placeholders to replace in `index.html`
 
